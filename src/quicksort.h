@@ -1,8 +1,8 @@
 #pragma once
+#include "cilk/cilk.h"
+
 #include <algorithm>
 #include <vector>
-
-#include "cilk/cilk.h"
 
 namespace qs {
 
@@ -20,7 +20,7 @@ std::size_t part(std::vector<T>& arr, std::size_t l, std::size_t r) {
   std::size_t i = l;
   std::size_t j = r;
   while (i <= j) {
- while (arr[i] < v) {
+    while (arr[i] < v) {
       i++;
     }
     while (arr[j] > v) {
@@ -64,8 +64,7 @@ void par_quick_sort_impl(std::vector<T>& arr, std::size_t l, std::size_t r, std:
     return;
   }
   auto q = part(arr, l, r);
-  cilk_spawn 
-  par_quick_sort_impl(arr, l, q, size);
+  cilk_spawn par_quick_sort_impl(arr, l, q, size);
   par_quick_sort_impl(arr, q + 1, r, size);
   cilk_sync;
 }
